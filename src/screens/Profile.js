@@ -105,14 +105,16 @@ export default class Profile extends React.PureComponent {
 
       return (
         <View style={styles.container}>
-          <Modal
+
+          {/* <Modal
             visible={!this.state.modalVisible}
           >
             <Camera type={this.state.type}>
 
+              <Button className="camera-close" title="Fechar" />
             </Camera>
-            <Button className="camera-close" title="Fechar" />
-          </Modal>
+          </Modal> */}
+
           <View style={styles.header}>
             <Image
               className="header-image"
@@ -129,9 +131,9 @@ export default class Profile extends React.PureComponent {
             <ScrollView>
               <View style={styles.profileTitle}>
                 <TouchableOpacity className="profile-image-btn"
-                  onPress={() => {
-                    this.setModalVisible(!this.state.modalVisible)
-                  }}
+                  // onPress={() => {
+                  //   this.setModalVisible(!this.state.modalVisible)
+                  // }}
                   onPress={this.takePicture}
                 >
                   <Image
@@ -141,8 +143,8 @@ export default class Profile extends React.PureComponent {
                   />
                   <Text className="profile-name" style={styles.profileName}>{profile.name}</Text>
                   <StatusBar className="status-bar" backgroundColor="blue" barStyle="light-content" />
-                  <Button className="camera-close" title="Fechar" />
-
+                  {/*  <Button className="camera-close" title="Fechar" />
+ */}
                 </TouchableOpacity>
 
 
