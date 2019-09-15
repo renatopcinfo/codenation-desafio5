@@ -9,9 +9,7 @@ import {
   ActivityIndicator,
   Animated,
   TouchableOpacity,
-  StatusBar,
-  Button,
-  Modal
+  StatusBar
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
@@ -42,15 +40,10 @@ export default class Profile extends React.PureComponent {
   fadeAnimation = new Animated.Value(0)
 
   state = {
-    modalVisible: false,
-  };
-
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
-  }
-
-  state = {
-    loading: true
+    loading: true,
+    hasCameraPermission: null,
+    type: Camera.Constants.Type.back,
+    cameraSelecionada: false
   }
 
   componentDidMount() {
@@ -72,19 +65,10 @@ export default class Profile extends React.PureComponent {
     }
   }
 
-  takePicture = () => {
-    this.setState({
-      type:
-        this.state.type === Camera.Constants.Type.back
-          ? Camera.Constants.Type.front
-          : Camera.Constants.Type.back
-    });
-  };
-
-  state = {
-    switchValue: false,
-    hasCameraPermission: null,
-    type: Camera.Constants.Type.back,
+  takePicture = async () => {
+    if (this.camera) {
+      const photo = await this.camera.takePictureAsync()
+    }
   };
 
   async componentWillMount() {
@@ -101,21 +85,20 @@ export default class Profile extends React.PureComponent {
     } else if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
 
+    } else if (cameraSelecionada) {
+      <Camera style={{ flex: 1 }}
+        ref={ref => { this.camera = ref; }}
+      >
+        <TouchableOpacity
+          onPress={() => { this.takePicture() }}
+        ><Text>Tirar foto</Text></TouchableOpacity>
+      </Camera>
     } else {
 
       return (
         <View style={styles.container}>
-
-          {/* <Modal
-            visible={!this.state.modalVisible}
-          >
-            <Camera type={this.state.type}>
-
-              <Button className="camera-close" title="Fechar" />
-            </Camera>
-          </Modal> */}
-
           <View style={styles.header}>
+
             <Image
               className="header-image"
               style={styles.headerImage}
@@ -131,10 +114,7 @@ export default class Profile extends React.PureComponent {
             <ScrollView>
               <View style={styles.profileTitle}>
                 <TouchableOpacity className="profile-image-btn"
-                  // onPress={() => {
-                  //   this.setModalVisible(!this.state.modalVisible)
-                  // }}
-                  onPress={this.takePicture}
+                  onPress={this.setState({ cameraSelecionada: true })}
                 >
                   <Image
                     className="profile-image"
@@ -143,11 +123,8 @@ export default class Profile extends React.PureComponent {
                   />
                   <Text className="profile-name" style={styles.profileName}>{profile.name}</Text>
                   <StatusBar className="status-bar" backgroundColor="blue" barStyle="light-content" />
-                  {/*  <Button className="camera-close" title="Fechar" />
- */}
+                  {/*  <Button className="camera-close" title="Fechar" /> */}
                 </TouchableOpacity>
-
-
 
               </View>
               <Animated.View className="contact-content" style={[styles.userContent, { opacity: this.fadeAnimation }]}>
