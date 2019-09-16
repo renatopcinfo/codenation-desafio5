@@ -9,7 +9,8 @@ import {
   ActivityIndicator,
   Animated,
   TouchableOpacity,
-  StatusBar
+  StatusBar,
+  Button
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
@@ -68,6 +69,7 @@ export default class Profile extends React.PureComponent {
   takePicture = async () => {
     if (this.camera) {
       const photo = await this.camera.takePictureAsync()
+      console.log(photo)
     }
   };
 
@@ -77,21 +79,21 @@ export default class Profile extends React.PureComponent {
   }
 
   render() {
-
     const { hasCameraPermission } = this.state;
     if (hasCameraPermission === null) {
       return <View />;
 
     } else if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
+      return <Text style={styles.cameraNoPermission}>No access to camera</Text>;
 
-    } else if (cameraSelecionada) {
-      <Camera style={{ flex: 1 }}
+    } else if (this.state.cameraSelecionada) {
+      return <Camera style={{ flex: 1 }}
         ref={ref => { this.camera = ref; }}
       >
         <TouchableOpacity
           onPress={() => { this.takePicture() }}
-        ><Text>Tirar foto</Text></TouchableOpacity>
+        >
+          <Text style={styles.takePhoto}>Tirar Foto</Text></TouchableOpacity>
       </Camera>
     } else {
 
@@ -123,8 +125,10 @@ export default class Profile extends React.PureComponent {
                   />
                   <Text className="profile-name" style={styles.profileName}>{profile.name}</Text>
                   <StatusBar className="status-bar" backgroundColor="blue" barStyle="light-content" />
-                  {/*  <Button className="camera-close" title="Fechar" /> */}
+
                 </TouchableOpacity>
+
+
 
               </View>
               <Animated.View className="contact-content" style={[styles.userContent, { opacity: this.fadeAnimation }]}>
@@ -246,5 +250,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     padding: 5,
     paddingHorizontal: 10
+  },
+  cameraNoPermission: {
+    fontSize: 30,
+    paddingTop: 300,
+    marginLeft: 30
+  },
+  takePhoto: {
+    fontSize: 30,
+    color: '#00E0E0',
+    paddingTop: 670,
+    marginLeft: 120
   }
 });
