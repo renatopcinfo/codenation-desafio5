@@ -18,7 +18,7 @@
     "@types/googlemaps": "^3.37.6",
     "@types/markerclustererplus": "^2.1.33",
     "@types/react": "^16.9.2",
-    "ajv": "^6.10.2",
+    "ajv": "^6.12.3",
     "codenation-jest-score": "https://github.com/thecodenation/codenation-jest-score/tarball/master",
     "expo": "^33.0.0",
     "expo-camera": "~6.0.0",
